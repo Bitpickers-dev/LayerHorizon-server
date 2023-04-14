@@ -25,3 +25,9 @@ class ArbBlockSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = models.ArbBlock
         fields = ['number', 'hash', 'timestamp', 'l1BlockNumber', 'transactions']
+
+
+class OptBlockSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = models.OptBlock
+        fields = ['number', 'hash', 'timestamp', 'l1BlockNumber', 'transactions']

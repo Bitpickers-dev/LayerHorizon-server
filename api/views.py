@@ -5,9 +5,6 @@ from django.http import JsonResponse
 from django.contrib.auth.models import User, Group
 from rest_framework import viewsets, permissions, decorators
 
-# settings
-blockTransactionDetail = False
-
 
 class UserViewSet(viewsets.ModelViewSet):
     """
@@ -32,9 +29,10 @@ class EthBlockViewSet(viewsets.ModelViewSet):
     TODO
     """
     queryset = models.EthBlock.objects.all()
+    serializer_class = serializers.EthBlockSerializer
     api = alchemy.EthApiClass()
     model = models.EthBlock
-    serializer_class = serializers.EthBlockSerializer
+    blockTransactionDetail = False
 
     def saveBlock(self, response: dict):
         smartblock = self.model(
@@ -53,13 +51,13 @@ class EthBlockViewSet(viewsets.ModelViewSet):
             if int(latest_number, 16) - int(latest_object, 16) > 128:
                 raise ValueError
         except (AttributeError, ValueError) as e:  # notExistsObject or tooManyObject
-            response = self.api.getFormatBlock(latest_number, blockTransactionDetail)
+            response = self.api.getFormatBlock(latest_number, self.blockTransactionDetail)
             self.saveBlock(response)
             return JsonResponse({'process': f'{self}', 'error': e.__class__.__name__, 'count': 1, 'latest_number': latest_number})
 
         rge = [hex(x) for x in range(int(latest_object, 16) + 1, int(latest_number, 16) + 1)]
         with ThreadPoolExecutor() as executor:
-            responses = executor.map(self.api.getFormatBlock, rge, itertools.repeat(blockTransactionDetail))
+            responses = executor.map(self.api.getFormatBlock, rge, itertools.repeat(self.blockTransactionDetail))
         for response in responses:
             self.saveBlock(response)
         return JsonResponse({'process': f'{self}', 'count': len(rge), 'latest_number': latest_number, 'latest_object': latest_object})
@@ -70,9 +68,9 @@ class ArbBlockViewSet(EthBlockViewSet):
     TODO
     """
     queryset = models.ArbBlock.objects.all()
+    serializer_class = serializers.ArbBlockSerializer
     api = alchemy.ArbApiClass()
     model = models.ArbBlock
-    serializer_class = serializers.ArbBlockSerializer
 
     def saveBlock(self, response: dict):
         smartblock = self.model(
@@ -83,3 +81,14 @@ class ArbBlockViewSet(EthBlockViewSet):
             transactions=response['transactions']
         )
         smartblock.save()
+
+
+class OptBlockViewSet(ArbBlockViewSet):
+    """
+    TODO
+    """
+    queryset = models.OptBlock.objects.all()
+    serializer_class = serializers.OptBlockSerializer
+    api = alchemy.OptApiClass()
+    model = models.OptBlock
+    blockTransactionDetail = True  # TODO: Forcing l1Blocknumber

@@ -1,5 +1,4 @@
 from api import funcs
-import pprint
 import requests
 import environ
 
@@ -83,5 +82,41 @@ class ArbApiClass(EthApiClass):
             'hash': result['hash'],
             'timestamp': int(result['timestamp'], 16),
             'l1BlockNumber': result['l1BlockNumber'],
+            'transactions': transactions
+        }
+
+
+class OptApiClass(ArbApiClass):
+    def requestAlchemy(self, method: str, params: list):
+        return requestAlchemy('opt', method, params)
+
+    def getFormatBlock(self, number: str, detail: bool):
+        result = self.getBlock(number, detail)
+
+        if detail:
+            transactions = []
+            for transaction in result['transactions']:
+                transactions.append({
+                    'hash': transaction.get('hash', 'null'),
+                    'from': transaction.get('from', 'null'),
+                    'to': transaction.get('to', 'null'),
+                    'value': funcs.hex_to_eth(transaction.get('value', '0')),
+                    'gasPrice': funcs.hex_to_gwei(transaction.get('gasPrice', '0')),
+                    'l1BlockNumber': transaction.get('l1BlockNumber', 'null'),
+                    'transactionIndex': transaction.get('transactionIndex', 'null'),
+                })
+        else:
+            transactions = 'null'
+
+        try:
+            l1BlockNumber = transactions[0]['l1BlockNumber']  # TODO: Forcing l1Blocknumber
+        except KeyError:
+            l1BlockNumber = 'null'
+
+        return {
+            'number': result['number'],
+            'hash': result['hash'],
+            'timestamp': int(result['timestamp'], 16),
+            'l1BlockNumber': l1BlockNumber,
             'transactions': transactions
         }
