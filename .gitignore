@@ -1,0 +1,10 @@
+# venv
+/venv/
+
+# db
+*.sqlite3
+
+# django
+
+*/__pycache__/
+*/__init__.py
