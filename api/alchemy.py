@@ -18,3 +18,15 @@ def request_alchemy(chain: str, method: str, params: list):
         "content-type": "application/json"
     }
     return requests.post(url, json=payload, headers=headers).json()
+
+
+def eth_blockNumber():
+    return request_alchemy('eth', 'eth_blockNumber', [])
+
+
+def eth_block(number: str):
+    return request_alchemy('eth', 'eth_getBlockByNumber', [number, False])
+
+
+def eth_blockTransaction(number: str):
+    return request_alchemy('eth', 'eth_getBlockByNumber', [number, True])
