@@ -9,3 +9,14 @@ class EthBlock(models.Model):
 
     class Meta:
         ordering = ['-number']
+
+
+class ArbBlock(models.Model):
+    number = models.CharField(max_length=255)
+    hash = models.CharField(max_length=255)
+    timestamp = models.IntegerField()
+    l1BlockNumber = models.CharField(max_length=255)
+    transactions = models.JSONField()
+
+    class Meta:
+        ordering = ['-number']

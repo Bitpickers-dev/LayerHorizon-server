@@ -19,3 +19,9 @@ class EthBlockSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = models.EthBlock
         fields = ['number', 'hash', 'timestamp', 'transactions']
+
+
+class ArbBlockSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = models.ArbBlock
+        fields = ['number', 'hash', 'timestamp', 'l1BlockNumber', 'transactions']

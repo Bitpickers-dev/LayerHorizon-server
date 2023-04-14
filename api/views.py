@@ -63,3 +63,23 @@ class EthBlockViewSet(viewsets.ModelViewSet):
         for response in responses:
             self.saveBlock(response)
         return JsonResponse({'process': f'{self}', 'count': len(rge), 'latest_number': latest_number, 'latest_object': latest_object})
+
+
+class ArbBlockViewSet(EthBlockViewSet):
+    """
+    TODO
+    """
+    queryset = models.ArbBlock.objects.all()
+    api = alchemy.ArbApiClass()
+    model = models.ArbBlock
+    serializer_class = serializers.ArbBlockSerializer
+
+    def saveBlock(self, response: dict):
+        smartblock = self.model(
+            number=response['number'],
+            hash=response['hash'],
+            timestamp=response['timestamp'],
+            l1BlockNumber=response['l1BlockNumber'],
+            transactions=response['transactions']
+        )
+        smartblock.save()

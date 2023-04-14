@@ -1,4 +1,5 @@
 from api import funcs
+import pprint
 import requests
 import environ
 
@@ -52,5 +53,35 @@ class EthApiClass():
             'number': result['number'],
             'hash': result['hash'],
             'timestamp': int(result['timestamp'], 16),
+            'transactions': transactions
+        }
+
+
+class ArbApiClass(EthApiClass):
+    def requestAlchemy(self, method: str, params: list):
+        return requestAlchemy('arb', method, params)
+
+    def getFormatBlock(self, number: str, detail: bool):
+        result = self.getBlock(number, detail)
+
+        if detail:
+            transactions = []
+            for transaction in result['transactions']:
+                transactions.append({
+                    'hash': transaction.get('hash', 'null'),
+                    'from': transaction.get('from', 'null'),
+                    'to': transaction.get('to', 'null'),
+                    'value': funcs.hex_to_eth(transaction.get('value', '0')),
+                    'gasPrice': funcs.hex_to_gwei(transaction.get('gasPrice', '0')),
+                    'transactionIndex': transaction.get('transactionIndex', 'null'),
+                })
+        else:
+            transactions = 'null'
+
+        return {
+            'number': result['number'],
+            'hash': result['hash'],
+            'timestamp': int(result['timestamp'], 16),
+            'l1BlockNumber': result['l1BlockNumber'],
             'transactions': transactions
         }
