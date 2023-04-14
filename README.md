@@ -4,7 +4,7 @@
 
 ## Overview
 
-RESTAPI server for LayerHorizon
+REST API server for LayerHorizon
 
 ## Requirement
 
