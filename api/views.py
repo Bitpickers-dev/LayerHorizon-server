@@ -4,7 +4,7 @@ from django.shortcuts import render
 from django.contrib.auth.models import User, Group
 from rest_framework import viewsets
 from rest_framework import permissions
-from api import serializers
+from api import models, serializers
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -23,3 +23,11 @@ class GroupViewSet(viewsets.ModelViewSet):
     queryset = Group.objects.all()
     serializer_class = serializers.GroupSerializer
     permission_classes = [permissions.IsAuthenticated]
+
+
+class EthBlockViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows groups to be viewed or edited.
+    """
+    queryset = models.EthBlock.objects.all()
+    serializer_class = serializers.EthBlockSerializer
