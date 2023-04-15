@@ -2,7 +2,7 @@ from django.db import models
 
 
 class EthBlock(models.Model):
-    number = models.CharField(max_length=255)
+    number = models.CharField(max_length=255, primary_key=True)
     hash = models.CharField(max_length=255)
     timestamp = models.IntegerField()
     count = models.IntegerField()
@@ -13,7 +13,7 @@ class EthBlock(models.Model):
 
 
 class ArbBlock(models.Model):
-    number = models.CharField(max_length=255)
+    number = models.CharField(max_length=255, primary_key=True)
     hash = models.CharField(max_length=255)
     timestamp = models.IntegerField()
     count = models.IntegerField()
@@ -25,7 +25,7 @@ class ArbBlock(models.Model):
 
 
 class OptBlock(models.Model):
-    number = models.CharField(max_length=255)
+    number = models.CharField(max_length=255, primary_key=True)
     hash = models.CharField(max_length=255)
     timestamp = models.IntegerField()
     count = models.IntegerField()
