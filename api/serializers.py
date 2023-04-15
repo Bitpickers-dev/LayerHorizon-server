@@ -18,16 +18,16 @@ class GroupSerializer(serializers.HyperlinkedModelSerializer):
 class EthBlockSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = models.EthBlock
-        fields = ['number', 'hash', 'timestamp', 'transactions']
+        fields = ['number', 'hash', 'timestamp', 'count', 'transactions']
 
 
 class ArbBlockSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = models.ArbBlock
-        fields = ['number', 'hash', 'timestamp', 'l1BlockNumber', 'transactions']
+        fields = ['number', 'hash', 'timestamp', 'count', 'l1BlockNumber', 'transactions']
 
 
 class OptBlockSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = models.OptBlock
-        fields = ['number', 'hash', 'timestamp', 'l1BlockNumber', 'transactions']
+        fields = ['number', 'hash', 'timestamp', 'count', 'l1BlockNumber', 'transactions']

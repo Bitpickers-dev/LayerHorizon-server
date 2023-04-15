@@ -32,10 +32,10 @@ class EthBlockViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.EthBlockSerializer
     api = alchemy.EthApiClass()
     model = models.EthBlock
-    blockTransactionDetail = False
+    blockTransactionDetail = True
 
     def get_queryset(self):
-        queryset = self.queryset
+        queryset = self.model.objects.all()
 
         size = self.request.query_params.get('size')
         if size is not None:
@@ -50,6 +50,7 @@ class EthBlockViewSet(viewsets.ModelViewSet):
             number=response['number'],
             hash=response['hash'],
             timestamp=response['timestamp'],
+            count=response['count'],
             transactions=response['transactions']
         )
         smartblock.save()
@@ -84,7 +85,7 @@ class ArbBlockViewSet(EthBlockViewSet):
     model = models.ArbBlock
 
     def get_queryset(self):
-        queryset = self.queryset
+        queryset = self.model.objects.all()
 
         eth = self.request.query_params.get('eth')
         if eth is not None:
@@ -97,6 +98,7 @@ class ArbBlockViewSet(EthBlockViewSet):
             number=response['number'],
             hash=response['hash'],
             timestamp=response['timestamp'],
+            count=response['count'],
             l1BlockNumber=response['l1BlockNumber'],
             transactions=response['transactions']
         )
@@ -111,4 +113,3 @@ class OptBlockViewSet(ArbBlockViewSet):
     serializer_class = serializers.OptBlockSerializer
     api = alchemy.OptApiClass()
     model = models.OptBlock
-    blockTransactionDetail = True  # TODO: Forcing l1Blocknumber
