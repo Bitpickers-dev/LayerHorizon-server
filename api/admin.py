@@ -1,3 +1,6 @@
+from api import models
 from django.contrib import admin
 
-# Register your models here.
+admin.site.register(models.EthBlock)
+admin.site.register(models.ArbBlock)
+admin.site.register(models.OptBlock)
