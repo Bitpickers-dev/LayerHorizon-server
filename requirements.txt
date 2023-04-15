@@ -1,5 +1,7 @@
 requests
 apscheduler
+whitenoise
 django
 djangorestframework
-django-dotenv
+django-environ
+django-cors-headers
