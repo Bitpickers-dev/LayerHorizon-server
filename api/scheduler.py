@@ -1,3 +1,4 @@
+import os
 import requests
 from apscheduler.schedulers.background import BackgroundScheduler
 
@@ -7,7 +8,10 @@ def cache_blocks(base_url: str, chain: str):
 
 
 def auto_chache_blocks():
-    base_url = 'http://127.0.0.1:8000'
+    if 'WEBSITE_HOSTNAME' in os.environ:
+        base_url = 'https://' + os.environ['WEBSITE_HOSTNAME']
+    else:
+        base_url = 'http://127.0.0.1:8000'
     scheduler = BackgroundScheduler()
     scheduler.add_job(cache_blocks, 'interval', [base_url, 'eth'], seconds=23)
     scheduler.add_job(cache_blocks, 'interval', [base_url, 'arb'], seconds=17)
