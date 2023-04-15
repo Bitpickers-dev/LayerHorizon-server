@@ -52,7 +52,7 @@ class EthApiClass():
             'number': result['number'],
             'hash': result['hash'],
             'timestamp': int(result['timestamp'], 16),
-            'count': len(transaction),
+            'count': len(transactions),
             'transactions': transactions
         }
 
@@ -82,7 +82,7 @@ class ArbApiClass(EthApiClass):
             'number': result['number'],
             'hash': result['hash'],
             'timestamp': int(result['timestamp'], 16),
-            'count': len(transaction),
+            'count': len(transactions),
             'l1BlockNumber': result['l1BlockNumber'],
             'transactions': transactions
         }
@@ -119,7 +119,7 @@ class OptApiClass(ArbApiClass):
             'number': result['number'],
             'hash': result['hash'],
             'timestamp': int(result['timestamp'], 16),
-            'count': len(transaction),
+            'count': len(transactions),
             'l1BlockNumber': l1BlockNumber,
             'transactions': transactions
         }
