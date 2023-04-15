@@ -34,6 +34,17 @@ class EthBlockViewSet(viewsets.ModelViewSet):
     model = models.EthBlock
     blockTransactionDetail = False
 
+    def get_queryset(self):
+        queryset = self.queryset
+
+        size = self.request.query_params.get('size')
+        if size is not None:
+            latest_number = self.model.objects.first().number
+            limit_number = hex(int(latest_number, 16) - int(size) + 1)
+            queryset = queryset.filter(number__range=(limit_number, latest_number))
+
+        return queryset
+
     def saveBlock(self, response: dict):
         smartblock = self.model(
             number=response['number'],
@@ -71,6 +82,15 @@ class ArbBlockViewSet(EthBlockViewSet):
     serializer_class = serializers.ArbBlockSerializer
     api = alchemy.ArbApiClass()
     model = models.ArbBlock
+
+    def get_queryset(self):
+        queryset = self.queryset
+
+        eth = self.request.query_params.get('eth')
+        if eth is not None:
+            queryset = queryset.filter(l1BlockNumber=eth)
+
+        return queryset
 
     def saveBlock(self, response: dict):
         smartblock = self.model(
