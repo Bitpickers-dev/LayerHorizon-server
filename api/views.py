@@ -34,6 +34,13 @@ class EthBlockViewSet(viewsets.ModelViewSet):
     model = models.EthBlock
     blockTransactionDetail = True
 
+    def get_serializer(self, *args, **kwargs):
+        if self.action == 'list':
+            if 'fields[]' in self.request.query_params:
+                kwargs['fields'] = self.request.query_params.getlist('fields[]')
+
+        return super().get_serializer(*args, **kwargs)
+
     def get_queryset(self):
         queryset = self.model.objects.all()
 
